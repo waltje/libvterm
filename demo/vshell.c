@@ -46,10 +46,10 @@
 
 #include "ctimer.h"
 #include "protothread.h"
-#include "../vterm.h"
-#include "../stringv.h"
-#include "../macros.h"
-#include "../utlist.h"
+#include "../src/vterm.h"
+#include "../src/stringv.h"
+#include "../src/macros.h"
+#include "../src/utlist.h"
 
 // this is necessary for FreeBSD in some compilation scenarios
 #ifndef CCHARW_MAX

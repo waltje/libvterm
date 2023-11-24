@@ -2,7 +2,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "../macros.h"
+#include "../src/macros.h"
 #include "ctimer.h"
 
 struct _ctimer_s

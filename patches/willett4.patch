@@ -1,0 +1,38 @@
+From 17e442525439f5cba43d4c6c8406154bef905b9b Mon Sep 17 00:00:00 2001
+From: Sioryn Indianna Nereyeus  Willett <s4392620@student.uq.edu.au>
+Date: Mon, 10 Jan 2022 18:41:49 +1000
+Subject: [PATCH] vshell now has it's own CMakeLists.txt in the demo
+ subdirectory source files are not written out in duplicate
+
+---
+ CHANGELOG      | 5 +++++
+ CMakeLists.txt | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/CHANGELOG b/CHANGELOG
+index c54557a..5bbec1b 100644
+--- a/CHANGELOG
++++ CHANGELOG
+@@ -1,3 +1,8 @@
++9.4
++
++* [Sioryn Willett] now installs libvtermConfig.cmake 
++  which enables find_package(libvterm) in cmake projects
++
+ 9.3
+ 
+ * [Bryan Christ] Added support for anonymous colors which are used by
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 79a7db9..8578c0d 100644
+--- a/CMakeLists.txt
++++ CMakeLists.txt
+@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.10.2)
+ 
+ project(libvterm C)
+ set(MAJOR_VERSION 9)
+-set(MINOR_VERSION 3)
++set(MINOR_VERSION 4)
+ 
+ message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+ 
+

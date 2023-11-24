@@ -1,0 +1,95 @@
+From 39645d0d42f95342263621dd9c30015de4ec57c5 Mon Sep 17 00:00:00 2001
+From: Brett Nash <nash@nash.space>
+Date: Mon, 28 Mar 2022 11:12:09 -0700
+Subject: [PATCH] vterm: Add a get pixelsize call.
+
+---
+ vterm_buffer.c  |  9 ++++++++-
+ vterm_private.h |  6 ++++++
+ vterm_render.c  | 18 ++++++++++++++++++
+ 3 files changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/vterm_buffer.c b/vterm_buffer.c
+index 75c3e93..778392c 100644
+--- a/vterm_buffer.c
++++ vterm_buffer.c
+@@ -13,7 +13,7 @@
+ static vterm_cell_t** _vterm_buffer_alloc_raw(int rows, int cols);
+ 
+ void
+-vterm_buffer_alloc(vterm_t *vterm, int idx, int width, int height)
++vterm_buffer_alloc(vterm_t *vterm, int idx, int width, int height, int pixelwidth, int pixelheight)
+ {
+     vterm_desc_t    *v_desc;
+ 
+@@ -29,6 +29,9 @@ vterm_buffer_alloc(vterm_t *vterm, int idx, int width, int height)
+     v_desc->cols = width;
+     v_desc->max_cols = width;
+ 
++    v_desc->pixel.width = pixelwidth;
++    v_desc->pixel.height = pixelheight;
++
+     v_desc->scroll_min = 0;
+     v_desc->scroll_max = height - 1;
+ 
+@@ -143,6 +146,8 @@ vterm_buffer_set_active(vterm_t *vterm, int idx)
+     struct winsize  ws = {.ws_xpixel = 0, .ws_ypixel = 0};
+     int             width;
+     int             height;
++    int		    pixelwidth;
++    int		    pixelheight;
+     int             std_width, std_height;
+     int             curr_width, curr_height;
+ 
+@@ -177,6 +182,8 @@ vterm_buffer_set_active(vterm_t *vterm, int idx)
+     ioctl(vterm->pty_fd, TIOCGWINSZ, &ws);
+     height = ws.ws_row;
+     width = ws.ws_col;
++    pixelheight = ws.ws_ypixel;
++    pixelwidth = ws.ws_xpixel;
+ 
+     // treat the standard buffer special -- it never goes away
+     if(idx == VTERM_BUF_STANDARD)
+diff --git a/vterm_private.h b/vterm_private.h
+index 3382c2b..6f67324 100644
+--- a/vterm_private.h
++++ vterm_private.h
+@@ -97,6 +97,12 @@ struct _vterm_desc_s
+     int             bg;                         // current bg color
+     short           f_rgb[3];                   // current fg RGB values
+     short           b_rgb[3];                   // current bg RGB values
++
++    struct {
++	    int width;                          // Current pixels wide; May be zero if
++	    					// terminal emulator doesn't support this.
++	    int height;			        // Current pixels high; as above.
++    } pixel;
+ };
+ 
+ typedef struct _vterm_desc_s    vterm_desc_t;
+diff --git a/vterm_render.c b/vterm_render.c
+index 3950aa8..781206a 100644
+--- a/vterm_render.c
++++ vterm_render.c
+@@ -235,3 +235,21 @@ vterm_get_size( vterm_t *vterm, int *width, int *height )
+     return;
+ }
+ 
++void
++vterm_get_pixel_size( vterm_t *vterm, int *pixelwidth, int *pixelheight )
++{
++    vterm_desc_t    *v_desc = NULL;
++    int             idx;
++
++    if(vterm == NULL || pixelwidth == NULL || pixelheight == NULL )
++        return;
++
++    // set vterm desc buffer selector
++    idx = vterm_buffer_get_active(vterm);
++    v_desc = &vterm->vterm_desc[idx];
++
++    *pixelwidth = v_desc->pixel.width;
++    *pixelheight = v_desc->pixel.height;
++
++    return;
++}

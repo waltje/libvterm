@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.10.2)
 
 project(libvterm C)
 set(MAJOR_VERSION 9)
-set(MINOR_VERSION 3)
+set(MINOR_VERSION 4)
 
 message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
@@ -57,229 +57,76 @@ endif()
 
 find_package(Curses)
 
-add_library(vterm-static STATIC
-    color_cache.c
-    color_math.c
-    color_map.c
-    mouse_driver.c
-    mouse_driver_X10.c
-    mouse_driver_SGR.c
-    nc_wrapper.c
-    vterm.c
-    vterm_aio.c
-    vterm_ctrl_char.c
-    vterm_csi.c
-    vterm_exec.c
-    vterm_erase.c
-    vterm_error.c
-    vterm_escape.c
-    vterm_escape_simple.c
-    vterm_escape_suffixes.c
-    vterm_buffer.c
-    vterm_csi_CBT.c
-    vterm_csi_CUP.c
-    vterm_csi_CUx.c
-    vterm_csi_DCH.c
-    vterm_csi_DECSTBM.c
-    vterm_csi_DL.c
-    vterm_csi_ECH.c
-    vterm_csi_ED.c
-    vterm_csi_EL.c
-    vterm_csi_ICH.c
-    vterm_csi_IL.c
-    vterm_csi_IRM.c
-    vterm_csi_RESTORECUR.c
-    vterm_csi_REP.c
-    vterm_csi_RS1.c
-    vterm_csi_SAVECUR.c
-    vterm_csi_SD.c
-    vterm_csi_SGR.c
-    vterm_csi_SU.c
-    vterm_csi_UNKNOWN.c
-    vterm_cursor.c
-    vterm_dec_DECALN.c
-    vterm_dec_RM.c
-    vterm_dec_SM.c
-    vterm_esc_IND.c
-    vterm_esc_NEL.c
-    vterm_esc_RI.c
-    vterm_history.c
-    vterm_hook.c
-    vterm_misc.c
-    vterm_osc.c
-    vterm_osc_DA.c
-    vterm_read.c
-    vterm_render.c
-    vterm_reply.c
-    vterm_resize.c
-    vterm_scroll.c
-    vterm_userptr.c
-    vterm_utf8.c
-    vterm_wnd.c
-    vterm_write.c
-    stringv.c
-    )
+set(SRC_FILES src/color_cache.c
+        src/color_math.c
+        src/color_map.c
+        src/mouse_driver.c
+        src/mouse_driver_X10.c
+        src/mouse_driver_SGR.c
+        src/nc_wrapper.c
+        src/vterm.c
+        src/vterm_aio.c
+        src/vterm_ctrl_char.c
+        src/vterm_csi.c
+        src/vterm_exec.c
+        src/vterm_erase.c
+        src/vterm_error.c
+        src/vterm_escape.c
+        src/vterm_escape_simple.c
+        src/vterm_escape_suffixes.c
+        src/vterm_buffer.c
+        src/vterm_csi_CBT.c
+        src/vterm_csi_CUP.c
+        src/vterm_csi_CUx.c
+        src/vterm_csi_DCH.c
+        src/vterm_csi_DECSTBM.c
+        src/vterm_csi_DL.c
+        src/vterm_csi_ECH.c
+        src/vterm_csi_ED.c
+        src/vterm_csi_EL.c
+        src/vterm_csi_ICH.c
+        src/vterm_csi_IL.c
+        src/vterm_csi_IRM.c
+        src/vterm_csi_RESTORECUR.c
+        src/vterm_csi_REP.c
+        src/vterm_csi_RS1.c
+        src/vterm_csi_SAVECUR.c
+        src/vterm_csi_SD.c
+        src/vterm_csi_SGR.c
+        src/vterm_csi_SU.c
+        src/vterm_csi_UNKNOWN.c
+        src/vterm_cursor.c
+        src/vterm_dec_DECALN.c
+        src/vterm_dec_RM.c
+        src/vterm_dec_SM.c
+        src/vterm_esc_IND.c
+        src/vterm_esc_NEL.c
+        src/vterm_esc_RI.c
+        src/vterm_history.c
+        src/vterm_hook.c
+        src/vterm_misc.c
+        src/vterm_osc.c
+        src/vterm_osc_DA.c
+        src/vterm_read.c
+        src/vterm_render.c
+        src/vterm_reply.c
+        src/vterm_resize.c
+        src/vterm_scroll.c
+        src/vterm_userptr.c
+        src/vterm_utf8.c
+        src/vterm_wnd.c
+        src/vterm_write.c
+        src/stringv.c)
 
-add_library(vterm.o OBJECT
-    color_cache.c
-    color_math.c
-    color_map.c
-    mouse_driver.c
-    mouse_driver_X10.c
-    mouse_driver_SGR.c
-    nc_wrapper.c
-    vterm.c
-    vterm_aio.c
-    vterm_buffer.c
-    vterm_ctrl_char.c
-    vterm_csi.c
-    vterm_erase.c
-    vterm_error.c
-    vterm_escape.c
-    vterm_escape_simple.c
-    vterm_escape_suffixes.c
-    vterm_exec.c
-    vterm_csi_CBT.c
-    vterm_csi_CUP.c
-    vterm_csi_CUx.c
-    vterm_csi_DCH.c
-    vterm_csi_DECSTBM.c
-    vterm_csi_DL.c
-    vterm_csi_ECH.c
-    vterm_csi_ED.c
-    vterm_csi_EL.c
-    vterm_csi_ICH.c
-    vterm_csi_IL.c
-    vterm_csi_IRM.c
-    vterm_csi_RESTORECUR.c
-    vterm_csi_REP.c
-    vterm_csi_RS1.c
-    vterm_csi_SAVECUR.c
-    vterm_csi_SD.c
-    vterm_csi_SGR.c
-    vterm_csi_SU.c
-    vterm_csi_UNKNOWN.c
-    vterm_cursor.c
-    vterm_dec_DECALN.c
-    vterm_dec_RM.c
-    vterm_dec_SM.c
-    vterm_esc_IND.c
-    vterm_esc_NEL.c
-    vterm_esc_RI.c
-    vterm_history.c
-    vterm_hook.c
-    vterm_misc.c
-    vterm_osc.c
-    vterm_osc_DA.c
-    vterm_read.c
-    vterm_render.c
-    vterm_reply.c
-    vterm_resize.c
-    vterm_scroll.c
-    vterm_userptr.c
-    vterm_utf8.c
-    vterm_wnd.c
-    vterm_write.c
-    stringv.c
-    )
+add_library(vterm-static STATIC ${SRC_FILES})
+set_target_properties(vterm-static PROPERTIES PUBLIC_HEADER "vterm.h")
 
-add_library(vterm-shared SHARED
-    $<TARGET_OBJECTS:vterm.o>
-    )
+add_library(vterm.o OBJECT ${SRC_FILES})
+set_target_properties(vterm-static PROPERTIES PUBLIC_HEADER "vterm.h")
 
+add_library(vterm-shared SHARED $<TARGET_OBJECTS:vterm.o>)
 
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-
-    if (Curses_FOUND)
-        if(DEFINE_CURSES)
-            add_executable(vshell
-                demo/vshell.c
-                demo/ctimer.c
-                )
-        endif(DEFINE_CURSES)
-    endif()
-
-
-    if ((Curses_FOUND) AND (DEFINE_CURSES))
-        target_link_libraries(
-                    vshell
-                    vterm-shared
-                    vterm-static
-                    -lutil
-                    -lm
-                    -lrt
-                    -ldl
-                    ${CURSES_LIBRARIES})
-    else()
-        target_link_libraries(
-                    vterm-shared
-                    vterm-static
-                    -lutil
-                    -lm
-                    -lrt
-                    -ldl
-                    ${CURSES_LIBRARIES})
-    endif()
-endif()
-
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-
-    if(DEFINE_CURSES)
-        add_executable(vshell
-            demo/vshell.c
-            demo/ctimer.c
-            )
-    endif(DEFINE_CURSES)
-
-    if (DEFINE_CURSES)
-        target_link_libraries(
-                    vshell
-                    vterm-shared
-                    vterm-static
-                    -lc
-                    -lutil
-                    -lm
-                    -lncursesw)
-    else()
-
-        target_link_libraries(
-                    vterm-shared
-                    vterm-static
-                    -lc
-                    -lutil
-                    -lm
-                    -lncursesw)
-    endif()
-endif()
-
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-
-    if(DEFINE_CURSES)
-        add_executable(vshell
-            demo/vshell.c
-            demo/ctimer.c
-            )
-    endif(DEFINE_CURSES)
-
-    #link_directories(/usr/local/opt/ncurses/lib/)
-
-    if (DEFINE_CURSES)
-        target_link_libraries(
-                    vshell
-                    vterm-shared
-                    vterm-static
-                    -lutil
-                    -lm
-                    /usr/local/opt/ncurses/lib/libncursesw.dylib)
-    else()
-        target_link_libraries(
-                    vterm-shared
-                    vterm-static
-                    -lutil
-                    -lm)
-    endif()
-endif()
-
+add_subdirectory(demo)
 
 # CMake doesn't allow targets with the same name.  This renames them properly afterward.
 SET_TARGET_PROPERTIES(vterm-static PROPERTIES OUTPUT_NAME vterm CLEAN_DIRECT_OUTPUT 1)
@@ -297,34 +144,28 @@ configure_file(
   "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc"
 )
 
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+install (TARGETS vterm-static vterm-shared
+        EXPORT libvtermTargets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+        PUBLIC_HEADER DESTINATION include
+        )
 
-    if (Curses_FOUND)
-        if(DEFINE_CURSES)
-            install (TARGETS vshell DESTINATION bin)
-        endif(DEFINE_CURSES)
-    endif()
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+        libvtermConfigVersion.cmake
+        VERSION ${PACKAGE_VERSION}
+        COMPATIBILITY AnyNewerVersion
+)
 
-endif()
+install(EXPORT libvtermTargets
+        FILE libvtermTargets.cmake
+        NAMESPACE libvterm::
+        DESTINATION lib/cmake/libvterm
+        )
 
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
-
-    if(DEFINE_CURSES)
-        install (TARGETS vshell DESTINATION bin)
-    endif(DEFINE_CURSES)
-
-endif()
-
-if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
-
-    if(DEFINE_CURSES)
-        install (TARGETS vshell DESTINATION bin)
-    endif(DEFINE_CURSES)
-
-endif()
-
-install (TARGETS vterm-static vterm-shared DESTINATION lib)
-install (FILES vterm.h DESTINATION include)
 
 # Install pkgconfig files to libdata on BSD, otherwise lib
 if(CMAKE_SYSTEM_NAME MATCHES "BSD")
@@ -333,6 +174,12 @@ else()
     set(PKG_CONFIG_INSTALL_DIR "lib/pkgconfig")
 endif()
 install (FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION ${PKG_CONFIG_INSTALL_DIR})
+
+configure_file(libvtermConfig.cmake.in libvtermConfig.cmake @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libvtermConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/libvtermConfigVersion.cmake"
+        DESTINATION lib/cmake/libvterm
+        )
 
 set(CPACK_GENERATOR "DEB;RPM")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Bryan")

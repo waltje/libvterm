@@ -1,0 +1,79 @@
+From 08bdf560abf5b0a133ec43c049804b335ed8d6be Mon Sep 17 00:00:00 2001
+From: Sioryn Indianna Nereyeus  Willett <s4392620@student.uq.edu.au>
+Date: Mon, 10 Jan 2022 16:57:21 +1000
+Subject: [PATCH] cmake projects can now link vterm-static with:
+ find_package(libvterm REQUIRED) and target_link_libraries(target PRIVATE
+ libvterm::vterm-static)
+
+---
+ CMakeLists.txt          | 29 ++++++++++++++++++++++++++++-
+ libvtermConfig.cmake.in | 11 +++++++++++
+ 2 files changed, 39 insertions(+), 1 deletion(-)
+ create mode 100644 libvtermConfig.cmake.in
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 55aba87..4d3a812 100644
+--- a/CMakeLists.txt
++++ CMakeLists.txt
+@@ -323,9 +323,30 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+ 
+ endif()
+ 
+-install (TARGETS vterm-static vterm-shared DESTINATION lib)
++install (TARGETS vterm-static vterm-shared
++        EXPORT libvtermTargets
++        LIBRARY DESTINATION lib
++        ARCHIVE DESTINATION lib
++        RUNTIME DESTINATION bin
++        INCLUDES DESTINATION include
++        )
++
++include(CMakePackageConfigHelpers)
++write_basic_package_version_file(
++        libvtermConfigVersion.cmake
++        VERSION ${PACKAGE_VERSION}
++        COMPATIBILITY AnyNewerVersion
++)
++
+ install (FILES vterm.h DESTINATION include)
+ 
++install(EXPORT libvtermTargets
++        FILE libvtermTargets.cmake
++        NAMESPACE libvterm::
++        DESTINATION lib/cmake/libvterm
++        )
++
++
+ # Install pkgconfig files to libdata on BSD, otherwise lib
+ if(CMAKE_SYSTEM_NAME MATCHES "BSD")
+     set(PKG_CONFIG_INSTALL_DIR "libdata/pkgconfig")
+@@ -334,6 +355,12 @@ else()
+ endif()
+ install (FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc" DESTINATION ${PKG_CONFIG_INSTALL_DIR})
+ 
++configure_file(libvtermConfig.cmake.in libvtermConfig.cmake @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/libvtermConfig.cmake"
++        "${CMAKE_CURRENT_BINARY_DIR}/libvtermConfigVersion.cmake"
++        DESTINATION lib/cmake/libvterm
++        )
++
+ set(CPACK_GENERATOR "DEB;RPM")
+ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Bryan")
+ SET(CPACK_PACKAGE_VERSION_MAJOR "${MAJOR_VERSION}")
+diff --git a/libvtermConfig.cmake.in b/libvtermConfig.cmake.in
+new file mode 100644
+index 0000000..581ef94
+--- /dev/null
++++ libvtermConfig.cmake.in
+@@ -0,0 +1,11 @@
++include(CMakeFindDependencyMacro)
++
++## Same syntax as find_package
++find_dependency(Curses REQUIRED)
++if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
++    include_directories(/usr/local/opt/ncurses/include)
++    link_directories(/usr/local/opt/ncurses/lib)
++endif() 
++
++# Add the targets file
++include("${CMAKE_CURRENT_LIST_DIR}/libvtermTargets.cmake")
