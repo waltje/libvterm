@@ -30,7 +30,11 @@ mouse_driver_init(vterm_t *vterm)
     {
         mouse_state = calloc(1, sizeof(mouse_state_t));
 
+#ifdef __APPLE__
+	if (TRUE)
+#else
         if(has_mouse() == TRUE)
+#endif
         {
             mouse_state->origin = NULL;
         }

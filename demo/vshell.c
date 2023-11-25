@@ -41,7 +41,7 @@
 #endif
 
 #if defined(__APPLE__) && defined(__MACH__)
-#include <ncursesw/ncurses.h>
+#include <ncurses.h>
 #endif
 
 #include "ctimer.h"

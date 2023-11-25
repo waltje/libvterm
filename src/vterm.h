@@ -16,11 +16,11 @@
 #endif
 
 #ifdef __FreeBSD__
-#include <ncurses/ncurses.h>
+#include <ncursesw/ncurses.h>
 #endif
 
 #if defined(__APPLE__) && defined(__MACH__)
-#include <ncursesw/ncurses.h>
+#include <ncurses.h>
 #endif
 
 #undef TRUE

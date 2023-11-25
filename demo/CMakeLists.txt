@@ -36,8 +36,8 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "FreeBSD")
 
     if(DEFINE_CURSES)
         add_executable(vshell
-                demo/vshell.c
-                demo/ctimer.c
+                ../demo/vshell.c
+                ../demo/ctimer.c
                 )
     endif(DEFINE_CURSES)
 
@@ -66,13 +66,14 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 
     if(DEFINE_CURSES)
         add_executable(vshell
-                vshell.c
-                ctimer.c
+                ../demo/vshell.c
+                ../demo/ctimer.c
                 )
     endif(DEFINE_CURSES)
 
     #link_directories(/usr/local/opt/ncurses/lib/)
 
+#               /usr/local/opt/ncurses/lib/libncursesw.dylib)
     if (DEFINE_CURSES)
         target_link_libraries(
                 vshell
@@ -80,7 +81,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
                 vterm-static
                 -lutil
                 -lm
-                /usr/local/opt/ncurses/lib/libncursesw.dylib)
+                -lncurses)
     else()
         target_link_libraries(
                 vterm-shared

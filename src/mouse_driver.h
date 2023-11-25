@@ -12,8 +12,9 @@
 #endif
 
 #if defined(__APPLE__) && defined(__MACH__)
-// #include <ncurses.h>
-#include <ncursesw/ncurses.h>
+#include <ncurses.h>
+//#include <ncursesw/ncurses.h>
+extern int has_mouse(void);
 #endif
 
 #include "vterm.h"
